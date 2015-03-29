@@ -1,6 +1,7 @@
 mouseX = 0
 mouseY = 0
-
+mapSize = 2560;
+zoom = 1;
 
 d1 = false;
 d2 = false;
@@ -8,19 +9,33 @@ rects = new Array();
 points=new Array();
 polygons = new Array();
 
-
-
-function init(){
-	// alert(1)
-
+$(function(){
 	canvasDiv=document.getElementById("canvas");
-	canvasDiv.onmousemove = getMouseXY;
-	canvasDiv.onclick = drawPoint;
-
 	window.gr = new jxGraphics(canvasDiv);
-}
+
+	$(document).on('mousemove','#canvas',getMouseXY);
+	$(document).on('click','#canvas',drawPoint);
 
 
+
+	// Zoom
+
+	/*$(document.body).on('mousewheel',function(event){
+
+		zoom += event.deltaY/2;
+
+		zoom = zoom<1?1:zoom;
+		zoom = zoom>10?10:zoom;
+
+		// $('#canvas').css()
+		canvasDiv.style.width = canvasDiv.style.height = canvasDiv.style["background-size"] = mapSize * zoom + 'px';
+		gr.getSVG().style.width = gr.getSVG().style.height = mapSize * zoom + 'px';
+	});*/
+
+
+
+	//---------------------------------------------------
+})
 //Get mouse position
 function getMouseXY(e)
 {
@@ -39,15 +54,15 @@ function getMouseXY(e)
 	if (mouseX < 0){mouseX = 0}
 	if (mouseY < 0){mouseY = 0}
 
-	mouseX =mouseX - canvasDiv.offsetLeft;
-	mouseY =mouseY - canvasDiv.offsetTop;
+	// mouseX = mouseX - canvasDiv.offsetLeft;
+	// mouseY = mouseY - canvasDiv.offsetTop;
 
 	return true;
 }
 
 function getColor()
 {
-	var color = false;
+	var color = null;
 
 	if(document.getElementById("color").value!="")
 	{
@@ -63,7 +78,7 @@ function getColor()
 function getPen()
 {
 
-	var pen = false;
+	var pen = null;
 
 	if(document.getElementById("penwidth").value!="")
 		penWidth=parseInt(document.getElementById("penwidth").value);
@@ -78,7 +93,7 @@ function getPen()
 
 function getBrush()
 {
-	brush=new jxBrush( getColor() );
+	return new jxBrush( getColor() )
 }
 
 function checkPoints(noAlert)
