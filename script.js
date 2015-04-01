@@ -235,6 +235,6 @@ function ShowPoints()
 
 function track(track)
 {
-	canvasDiv.style.backgroundImage = "url(img/"+track+".jpg)";
+	canvasDiv.style.backgroundImage = "url(http://img.lfs.net/remote/maps/"+track+".jpg)";
 	return false;
 }
