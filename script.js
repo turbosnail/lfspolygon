@@ -159,6 +159,9 @@ function fillPolygon()
     polygons[polygons.length] = polygon;
 
     ShowPoints();
+    
+    if(document.getElementById("autoclearprevious").checked)
+        clearPreviousPoints();
 }
 
 
