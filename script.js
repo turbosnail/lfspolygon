@@ -77,18 +77,7 @@ function getColor()
 
 function getPen()
 {
-
-    var pen = null;
-
-    if(document.getElementById("penwidth").value!="")
-        penWidth=parseInt(document.getElementById("penwidth").value);
-
-    if(!isNaN(penWidth) && penwidth > 0)
-        pen=new jxPen(getColor(), penWidth+'px');
-    else
-        pen=new jxPen(getColor(), '1px');
-
-    return pen;
+    return new jxPen(getColor(), '1px');;
 }
 
 function getBrush()
@@ -122,7 +111,6 @@ function drawPoint()
     rects.push(rect);
     var point = new jxPoint(mouseX,mouseY)
     points.push(point);
-    console.log(point)
     return point;
 }
 
@@ -159,6 +147,7 @@ function fillPolygon()
     polygons[polygons.length] = polygon;
 
     ShowPoints();
+    clearPreviousPoints();
 }
 
 

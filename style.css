@@ -18,15 +18,16 @@ body {
 input {
 	color: #555;
 	font: normal 1.1em "Lucida Sans Unicode",sans-serif;
+    font-weight:bold;
 }
 
 #work{
 	position:fixed;
 	top:0;
 	left:0;
-	min-height:100px;
-	min-width:100px;
-	background-color:#fff;
+	height:50px;
+	/*min-width:100px;*/
+	/*background-color:#fff;*/
 }
 
 #canvas{
@@ -34,5 +35,37 @@ input {
 	position:absolute;
 	width:2560px;
 	height:2560px;
-	background:url(img/SO.jpg);
+	background:url(http://img.lfs.net/remote/maps/AS.jpg);
+}
+
+.output{
+    min-height:150px;
+    max-height:100%;
+    min-width:350px;
+    max-width:350px;
+}
+
+.control_block{
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.control_block label{
+    color: #ffffff;
+}
+
+.control_block input,
+.control_block select{
+    border: 1px solid #555555;
+    height: 25px;
+    padding: 0 5px;
+}
+
+
+.output_block{
+    position: fixed;
+    top: 50px;
+    margin-bottom: 10px;
+    padding: 5px;
 }
