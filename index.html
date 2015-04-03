@@ -200,9 +200,13 @@
 
 			<input style="font-weight:bold" type="button" value="Clear Previous Points Set" onclick="clearPreviousPoints();"/>
 			<br><br>
-			<input type="checkbox" id="json" value="1">&nbsp;JSON?
+			<select id="output">
+				<option value="standard">Standard</option>
+				<option value="json">JSON</option>
+				<option value="php">PHP</option>
+			</select>
 			<br><br>
-			<textarea  style="height:150px;width:350px" id="txt" rows="5" cols="20"></textarea>
+			<textarea style="height:150px;width:350px" id="txt" rows="5" cols="20"></textarea>
 			<br><br>
 
 		</div>

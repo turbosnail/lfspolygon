@@ -10,231 +10,241 @@ points=new Array();
 polygons = new Array();
 
 $(function(){
-	canvasDiv=document.getElementById("canvas");
-	window.gr = new jxGraphics(canvasDiv);
+    canvasDiv=document.getElementById("canvas");
+    window.gr = new jxGraphics(canvasDiv);
 
-	$(document).on('mousemove','#canvas',getMouseXY);
-	$(document).on('click','#canvas',drawPoint);
-
-
-
-	// Zoom
-
-	/*$(document.body).on('mousewheel',function(event){
-
-		zoom += event.deltaY/2;
-
-		zoom = zoom<1?1:zoom;
-		zoom = zoom>10?10:zoom;
-
-		// $('#canvas').css()
-		canvasDiv.style.width = canvasDiv.style.height = canvasDiv.style["background-size"] = mapSize * zoom + 'px';
-		gr.getSVG().style.width = gr.getSVG().style.height = mapSize * zoom + 'px';
-	});*/
+    $(document).on('mousemove','#canvas',getMouseXY);
+    $(document).on('click','#canvas',drawPoint);
 
 
 
-	//---------------------------------------------------
+    // Zoom
+
+    /*$(document.body).on('mousewheel',function(event){
+
+        zoom += event.deltaY/2;
+
+        zoom = zoom<1?1:zoom;
+        zoom = zoom>10?10:zoom;
+
+        // $('#canvas').css()
+        canvasDiv.style.width = canvasDiv.style.height = canvasDiv.style["background-size"] = mapSize * zoom + 'px';
+        gr.getSVG().style.width = gr.getSVG().style.height = mapSize * zoom + 'px';
+    });*/
+
+
+
+    //---------------------------------------------------
 })
 //Get mouse position
 function getMouseXY(e)
 {
 
-	if (document.all) //For IE
-	{
-		mouseX = event.clientX + document.body.parentElement.scrollLeft;
-		mouseY = event.clientY + document.body.parentElement.scrollTop;
-	}
-	else
-	{
-		mouseX = e.pageX
-		mouseY = e.pageY
-	}
+    if (document.all) //For IE
+    {
+        mouseX = event.clientX + document.body.parentElement.scrollLeft;
+        mouseY = event.clientY + document.body.parentElement.scrollTop;
+    }
+    else
+    {
+        mouseX = e.pageX
+        mouseY = e.pageY
+    }
 
-	if (mouseX < 0){mouseX = 0}
-	if (mouseY < 0){mouseY = 0}
+    if (mouseX < 0){mouseX = 0}
+    if (mouseY < 0){mouseY = 0}
 
-	// mouseX = mouseX - canvasDiv.offsetLeft;
-	// mouseY = mouseY - canvasDiv.offsetTop;
+    // mouseX = mouseX - canvasDiv.offsetLeft;
+    // mouseY = mouseY - canvasDiv.offsetTop;
 
-	return true;
+    return true;
 }
 
 function getColor()
 {
-	var color = null;
+    var color = null;
 
-	if(document.getElementById("color").value!="")
-	{
-		color = new jxColor(document.getElementById("color").value);
-	}
-	else
-	{
-		color = new jxColor("blue");
-	}
-	return  color
+    if(document.getElementById("color").value!="")
+    {
+        color = new jxColor(document.getElementById("color").value);
+    }
+    else
+    {
+        color = new jxColor("blue");
+    }
+    return  color
 }
 
 function getPen()
 {
 
-	var pen = null;
+    var pen = null;
 
-	if(document.getElementById("penwidth").value!="")
-		penWidth=parseInt(document.getElementById("penwidth").value);
+    if(document.getElementById("penwidth").value!="")
+        penWidth=parseInt(document.getElementById("penwidth").value);
 
-	if(!isNaN(penWidth) && penwidth > 0)
-		pen=new jxPen(getColor(), penWidth+'px');
-	else
-		pen=new jxPen(getColor(), '1px');
+    if(!isNaN(penWidth) && penwidth > 0)
+        pen=new jxPen(getColor(), penWidth+'px');
+    else
+        pen=new jxPen(getColor(), '1px');
 
-	return pen;
+    return pen;
 }
 
 function getBrush()
 {
-	return new jxBrush( getColor() )
+    return new jxBrush( getColor() )
 }
 
 function checkPoints(noAlert)
 {
-	if(!noAlert)
-	{
-		if(points.length==0)
-		{
-			alert("Please click at any location on the blank canvas at left side to plot the points!");
-			return false;
-		}
-		else if(points.length<3)
-		{
-			alert("3 or more points are required to draw a polygon! Please plot more points by clicking at any location on the blank canvas at left side.");
-			return false;
-		}
-	}
-	return true;
+    if(!noAlert)
+    {
+        if(points.length==0)
+        {
+            alert("Please click at any location on the blank canvas at left side to plot the points!");
+            return false;
+        }
+        else if(points.length<3)
+        {
+            alert("3 or more points are required to draw a polygon! Please plot more points by clicking at any location on the blank canvas at left side.");
+            return false;
+        }
+    }
+    return true;
 }
 
 function drawPoint()
 {
 
-	rect = new jxRect(new jxPoint(mouseX-1,mouseY-1),2,2,getPen(), getBrush());
-	rect.draw(gr);
-	rects.push(rect);
-	var point = new jxPoint(mouseX,mouseY)
-	points.push(point);
-	console.log(point)
-	return point;
+    rect = new jxRect(new jxPoint(mouseX-1,mouseY-1),2,2,getPen(), getBrush());
+    rect.draw(gr);
+    rects.push(rect);
+    var point = new jxPoint(mouseX,mouseY)
+    points.push(point);
+    console.log(point)
+    return point;
 }
 
 
 function drawPolyline()
 {
-	if(!checkPoints())
-	    return;
+    if(!checkPoints())
+        return;
 
-	polyline = new jxPolyline(points,getPen(), getBrush());
-	polyline.draw(gr);
+    polyline = new jxPolyline(points,getPen(), getBrush());
+    polyline.draw(gr);
 
-	ShowPoints();
+    ShowPoints();
 }
 
 function drawLine()
 {
-	if(!checkPoints())
-	    return;
+    if(!checkPoints())
+        return;
 
-	gr.drawLine(pen,points[points.length-2],points[points.length-1]);
+    gr.drawLine(pen,points[points.length-2],points[points.length-1]);
 
-	ShowPoints();
+    ShowPoints();
 }
 
 function fillPolygon()
 {
-	if(!checkPoints())
-	    return;
+    if(!checkPoints())
+        return;
 
-	polygon = new jxPolygon(points,getPen(), getBrush());
-	polygon.draw(gr);
+    polygon = new jxPolygon(points,getPen(), getBrush());
+    polygon.draw(gr);
 
-	polygons[polygons.length] = polygon;
+    polygons[polygons.length] = polygon;
 
-	ShowPoints();
+    ShowPoints();
 }
 
 
 function clearCanvas()
 {
-	//gr.clear();
+    //gr.clear();
 
-	for(i in polygons)
-	{
-		polygons[i].remove()
-	}
+    for(i in polygons)
+    {
+        polygons[i].remove()
+    }
 
-	for(i in rects)
-	{
-		rects[i].remove()
-	}
+    for(i in rects)
+    {
+        rects[i].remove()
+    }
 
 
-	points=new Array();
-	polygons = new Array();
-	rects = new Array();
-	var txt=document.getElementById("txt").value = "";
+    points=new Array();
+    polygons = new Array();
+    rects = new Array();
+    var txt=document.getElementById("txt").value = "";
 }
 
 function clearPreviousPoints()
 {
-	for(i in rects)
-	{
-		rects[i].remove()
-	}
+    for(i in rects)
+    {
+        rects[i].remove()
+    }
 
-	points=new Array();
-	rects = new Array();
+    points=new Array();
+    rects = new Array();
 }
 
 function ShowPoints()
 {
-	var txt = document.getElementById("txt");
-	var json = document.getElementById("json").checked;
-	// txt.value="";
-	if(json)
-	{
-		if(txt.value.length)
-			txt.value += ',\n';
+    var txt = document.getElementById("txt");
+    var format = document.getElementById("output").value;
+    // txt.value="";
+    switch (format) {
+            case 'json':
+            if(txt.value.length)
+                txt.value += ',\n';
+    
+            txt.value += '{\n  X:[';
+            for(var i=0;i<points.length;i++)
+            {
+                if(i>0)
+                    txt.value += ', ';
+    
+                txt.value +=  (points[i].x - 1280);
+            }
+            txt.value += '],';
+    
+            txt.value += '\n  Y:[';
+            for(var i=0;i<points.length;i++)
+            {
+                if(i>0)
+                    txt.value += ', ';
+    
+                txt.value +=  (points[i].y - 1280);
+            }
+            txt.value += '],\n}';
+            break;
+            case 'php':
+                    txt.value="array(";
+                    for(var i=0;i<points.length;i++)
+                    {
+                        txt.value=txt.value + 'array("x" => ' + (points[i].x - 1280) + ', "y" => ' + (1280 - points[i].y) + "), ";
+                    }
+                    txt.value=txt.value.substring(0, txt.value.length-2);
+                    txt.value=txt.value + ')'
+            break;
+            default:
+            for(var i=0;i<points.length;i++)
+            {
+                txt.value +=  (points[i].x - 1280) + ";" + (1280 - points[i].y) + "\n";
+            }
+                break;
+    }
 
-		txt.value += '{\n  X:[';
-		for(var i=0;i<points.length;i++)
-		{
-			if(i>0)
-				txt.value += ', ';
-
-			txt.value +=  (points[i].x - 1280);
-		}
-		txt.value += '],';
-
-		txt.value += '\n  Y:[';
-		for(var i=0;i<points.length;i++)
-		{
-			if(i>0)
-				txt.value += ', ';
-
-			txt.value +=  (points[i].y - 1280);
-		}
-		txt.value += '],\n}';
-	}
-	else
-	{
-		for(var i=0;i<points.length;i++)
-		{
-			txt.value +=  (points[i].x - 1280) + ";" + (1280 - points[i].y) + "\n";
-		}
-	}
 }
 
 function track(track)
 {
-	canvasDiv.style.backgroundImage = "url(http://img.lfs.net/remote/maps/"+track+".jpg)";
-	return false;
+    canvasDiv.style.backgroundImage = "url(http://img.lfs.net/remote/maps/"+track+".jpg)";
+    return false;
 }
