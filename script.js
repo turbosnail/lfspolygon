@@ -201,43 +201,49 @@ function ShowPoints()
     // txt.value="";
     switch (format) {
             case 'json':
-            if(txt.value.length)
-                txt.value += ',\n';
-    
-            txt.value += '{\n  X:[';
-            for(var i=0;i<points.length;i++)
-            {
-                if(i>0)
-                    txt.value += ', ';
-    
-                txt.value +=  (points[i].x - 1280);
-            }
-            txt.value += '],';
-    
-            txt.value += '\n  Y:[';
-            for(var i=0;i<points.length;i++)
-            {
-                if(i>0)
-                    txt.value += ', ';
-    
-                txt.value +=  (points[i].y - 1280);
-            }
-            txt.value += '],\n}';
+                if(txt.value.length)
+                    txt.value += ',\n';
+
+                txt.value += '{\n  X:[';
+                for(var i=0;i<points.length;i++)
+                {
+                    if(i>0)
+                        txt.value += ', ';
+
+                    txt.value +=  (points[i].x - 1280);
+                }
+                txt.value += '],';
+
+                txt.value += '\n  Y:[';
+                for(var i=0;i<points.length;i++)
+                {
+                    if(i>0)
+                        txt.value += ', ';
+
+                    txt.value +=  (points[i].y - 1280);
+                }
+                txt.value += '],\n}';
             break;
             case 'php':
-                    txt.value="array(";
-                    for(var i=0;i<points.length;i++)
-                    {
-                        txt.value=txt.value + 'array("x" => ' + (points[i].x - 1280) + ', "y" => ' + (1280 - points[i].y) + "), ";
-                    }
-                    txt.value=txt.value.substring(0, txt.value.length-2);
-                    txt.value=txt.value + ')'
+                if(txt.value.length)
+                    txt.value += '\n';
+
+                txt.value += "array(";
+                for(var i=0;i<points.length;i++)
+                {
+                    if(i>0)
+                        txt.value += ',';
+
+                    txt.value += '\n    array("x" => ' + (points[i].x - 1280) + ', "y" => ' + (1280 - points[i].y) + ")";
+                }
+
+                txt.value += '\n)'
             break;
             default:
-            for(var i=0;i<points.length;i++)
-            {
-                txt.value +=  (points[i].x - 1280) + ";" + (1280 - points[i].y) + "\n";
-            }
+                for(var i=0;i<points.length;i++)
+                {
+                    txt.value +=  (points[i].x - 1280) + ";" + (1280 - points[i].y) + "\n";
+                }
                 break;
     }
 
