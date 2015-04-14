@@ -54,6 +54,8 @@ function getMouseXY(e)
     if (mouseX < 0){mouseX = 0}
     if (mouseY < 0){mouseY = 0}
 
+    $('.mouse_helper').css({left: (mouseX+15)+'px', top:(mouseY+15)+'px'}).text('X: '+(mouseX-1280) + ' Y: ' + (1280-mouseY));
+
     // mouseX = mouseX - canvasDiv.offsetLeft;
     // mouseY = mouseY - canvasDiv.offsetTop;
 
@@ -209,7 +211,7 @@ function ShowPoints()
                     if(i>0)
                         txt.value += ', ';
 
-                    txt.value +=  (points[i].y - 1280);
+                    txt.value +=  (1280 - points[i].y);
                 }
                 txt.value += '],\n}';
             break;
