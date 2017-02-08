@@ -295,8 +295,8 @@ function Export() {
             row.X = [];
             row.Y = [];
             for (j in layers[i].circles) {
-                row.X.push(layers[i].circles[j].center.x);
-                row.Y.push(layers[i].circles[j].center.y);
+                row.X.push(layers[i].circles[j].center.x - 1280);
+                row.Y.push(1280 - layers[i].circles[j].center.y);
             }
             data.push(row);
         }
