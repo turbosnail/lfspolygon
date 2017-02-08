@@ -1,69 +1,73 @@
 * {
-	margin: 0;
-	padding: 0;
-    font: normal 1.0em "Lucida Sans Unicode",sans-serif;
+    margin: 0;
+    padding: 0;
+    font: normal 1.0em "Lucida Sans Unicode", sans-serif;
 }
+
 a {
-	color: #36C;
+    color: #36C;
 }
+
 a:hover {
-	color: #06F;
+    color: #06F;
 }
+
 body {
-	background: #E7E7E7;
-	color: #444;
-	font: normal 62.5% "Lucida Sans Unicode",sans-serif;
-	margin: 0;
-	/*overflow: hidden;*/
+    background: #E7E7E7;
+    color: #444;
+    font: normal 62.5% "Lucida Sans Unicode", sans-serif;
+    margin: 0;
+    /*overflow: hidden;*/
 }
+
 input {
-	color: #555;
-	font: normal 1.1em "Lucida Sans Unicode",sans-serif;
-    font-weight:bold;
+    color: #555;
+    font: normal 1.1em "Lucida Sans Unicode", sans-serif;
+    font-weight: bold;
 }
 
-#work{
-	position:fixed;
-	top:0;
-	left:0;
-	height:50px;
-	/*min-width:100px;*/
-	/*background-color:#fff;*/
+#work {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 50px;
+    /*min-width:100px;*/
+    /*background-color:#fff;*/
 }
 
-#canvas{
-	/*overflow:hidden;*/
-	position:absolute;
-	width:2560px;
-	height:2560px;
-	background:url(http://img.lfs.net/remote/maps/AS.jpg);
+#canvas {
+    /*overflow:hidden;*/
+    position: absolute;
+    width: 2560px;
+    height: 2560px;
+    background: url(http://img.lfs.net/remote/maps/AS.jpg);
 }
 
-.output{
-    min-height:150px;
-    max-height:100%;
-    min-width:350px;
-    max-width:350px;
+.output {
+    min-height: 150px;
+    max-height: 100%;
+    min-width: 350px;
+    max-width: 350px;
     opacity: 0.3;
 }
 
 .output:focus {
-  opacity: 1;
+    opacity: 1;
 }
 
-.control_block{
+.control_block {
     /*display: inline-block;*/
     margin-bottom: 10px;
     padding: 5px;
 }
 
-.control_block label{
+.control_block label {
     color: #ffffff;
 }
 
 .control_block input,
 .control_block button,
-.control_block select{
+.control_block select {
     border: 1px solid #555555;
     height: 25px;
     width: 80px;
@@ -73,23 +77,22 @@ input {
 
 input[type="button"],
 input[type="color"],
-button{
+button {
     cursor: pointer;
 }
 
-.control_block select[size]{
+.control_block select[size] {
     height: inherit;
 }
 
-
-.output_block{
+.output_block {
     position: fixed;
     top: 50px;
     margin-bottom: 10px;
     padding: 5px;
 }
 
-.mouse_helper{
+.mouse_helper {
     position: absolute;
     width: 200px;
     height: 12px;
@@ -103,6 +106,7 @@ input[type="color"] {
     display: block;
     border: 1px solid #555555;
 }
+
 #color-picker-wrapper {
     display: inline-block;
 }
