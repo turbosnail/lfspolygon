@@ -4,11 +4,11 @@ mouseY = 0;
 // move circle
 drag = false;
 activeCircle = null;
-waypoints = [];
 
 $(function(){
     canvasDiv=document.getElementById("canvas");
     window.gr = new jxGraphics(canvasDiv);
+    gr.getSVG().style.opacity = 0.5;
 
     $(document).on('mousemove','#canvas',function(e){
         getMouseXY(e);
@@ -23,15 +23,86 @@ $(function(){
     });
 
     $(document).on('mouseup','#canvas',function(){
-        drag = false;
-        if(activeCircle == null) {
+
+        if(getEditType() == 'add') {
             createCirlce(true);
         }
+
+        if(getEditType() == 'delete'){
+            if (activeCircle) {
+                var layer = getLayer();
+
+                if(typeof layer == 'string' && layer.length > 0){
+                    var tmpCircles = [];
+                    for (var j in layers[ layer ].circles) {
+                        if(activeCircle.id != layers[ layer ].circles[j].id)
+                        {
+                            tmpCircles.push(layers[ layer ].circles[j]);
+                        }
+                        else{
+                            layers[ layer ].circles[j].remove();
+                        }
+                    }
+                    layers[ layer ].circles = tmpCircles;
+                    if(tmpCircles.length < 3)
+                        layers[ layer ].polygon.hide()
+
+                }
+            }
+        }
+
+        drag = false;
         activeCircle = null;
         reDrawPolygon();
     });
 
     //---------------------------------------------------
+
+    var color_picker = document.getElementById("color-picker");
+    var color_picker_wrapper = document.getElementById("color-picker-wrapper");
+    color_picker.onchange = function() {
+        color_picker_wrapper.style.backgroundColor = color_picker.value;
+        reDrawPolygon();
+    };
+    color_picker_wrapper.style.backgroundColor = color_picker.value;
+
+
+
+    $(document).on('change', '#layer', function(e){
+        var elem = this;
+        for(i in layers){
+            if(layers.hasOwnProperty(i))
+            {
+                $('#name').val(layers[i].name);
+                $('#speed').val(layers[i].speedLimit);
+                for(j in layers[i].circles)
+                {
+                    if(i == elem.value)
+                        layers[i].circles[j].show();
+                    else
+                        layers[i].circles[j].hide();
+                }
+            }
+        }
+    });
+
+    $(document).on('change', '#name', function(e){
+        var layer = getLayer();
+
+        if(typeof layer != 'string' || layer.length == 0)
+            return;
+
+        layers[layer].name = this.value;
+    });
+
+    $(document).on('change', '#speed', function(e){
+        var layer = getLayer();
+
+        if(typeof layer != 'string' || layer.length == 0)
+            return;
+
+        layers[layer].speedLimit = this.value;
+    });
 })
 //Get mouse position
 function getMouseXY(e)
@@ -63,9 +134,9 @@ function getColor()
 {
     var color = null;
 
-    if(document.getElementById("color").value!="")
+    if(document.getElementById("color-picker").value!="")
     {
-        color = new jxColor(document.getElementById("color").value);
+        color = new jxColor(document.getElementById("color-picker").value);
     }
     else
     {
@@ -76,7 +147,8 @@ function getColor()
 
 function getPen()
 {
-    return new jxPen(getColor(), '1px');;
+    // return new jxPen(getColor(), '1px');;
+    return new jxPen(new jxColor("black"), '1px');;
 }
 
 function getBrush()
@@ -92,7 +164,7 @@ function createCirlce(show)
         return;
 
     var cir = new jxCircle(new jxPoint(mouseX,mouseY), 5, getPen(), getBrush());
-    cir.id = layers[ getLayer()].circles.length;
+    cir.id = layer + '_' + layers[ layer ].circles.length;
 
     if(show)
         cir.draw(gr);
@@ -101,15 +173,20 @@ function createCirlce(show)
     cir.addEventListener('mouseup', circleMouseUp);
     cir.addEventListener('mouseover', circleMouseOver);
     cir.addEventListener('mouseout', circleMouseOut);
-    layers[ getLayer()].circles.push( cir );
+    layers[ layer ].circles.push( cir );
     return cir;
 }
 
 //Mousedown event handler for circle
 function circleMouseDown(evt, obj) {
 
-    drag = true;
-    activeCircle = obj;
+    if(getEditType() == 'move') {
+        drag = true;
+    }
+
+    if(getEditType() != 'add') {
+        activeCircle = obj;
+    }
 
 }
 
@@ -138,26 +215,29 @@ function circleMouseOut(evt, obj) {
 
 function reDrawPolygon() {
 
-    for(var i in layers)
-    {
-        if(layers.hasOwnProperty( i ))
-        {
-            if(layers[ i ].circles.length < 3)
-                continue;
+    var layer = getLayer();
 
-            if (typeof layers[ i ].polygon == 'undefined')
-                layers[ i ].polygon = new jxPolygon([], getPen(), getBrush())
+    if(typeof layer != 'string' || layer.length == 0)
+        return;
 
-            var points = [];
 
-            for (var j in layers[ i ].circles) {
-                points.push( layers[ i ].circles[ j ].center )
-            }
+    if(layers[ layer ].circles.length < 3)
+        return;
 
-            layers[ i ].polygon.points = points;
-            layers[ i ].polygon.draw(gr);
-        }
+    if (typeof layers[ layer ].polygon == 'undefined')
+        layers[ layer ].polygon = new jxPolygon([], getPen(), getBrush())
+
+    var points = [];
+
+    for (var j in layers[ layer ].circles) {
+        layers[ layer ].circles[ j ].brush = getBrush();
+        points.push( layers[ layer ].circles[ j ].center )
     }
+
+    layers[ layer ].polygon.points = points;
+    layers[ layer ].polygon.brush = getBrush();
+    layers[ layer ].polygon.draw(gr);
+
 }
 
 
@@ -179,14 +259,62 @@ function addLayer() {
     op.selected = true;
     op.value = op.innerHTML = name;
 
-   $('#layer').append(op);
-
     layers[name] = {};
 
     layers[name].circles = [];
     layers[name].speedLimit = 0;
+    layers[name].name = name;
+
+    $('#layer').append(op);
+    $('#layer').trigger('change');
 }
 
 function getLayer(){
     return $('#layer').val();
 }
+
+function clearCanvas(){
+    for(i in layers){
+        if(layers.hasOwnProperty(i))
+        {
+            for(j in layers[i].circles)
+            {
+                layers[i].circles[j].remove();
+            }
+
+            layers[i].polygon.remove();
+        }
+    }
+
+    layers = {};
+
+    $('#layer').html('');
+}
+
+function Export(){
+    var data = [];
+
+    for(i in layers){
+        if(layers.hasOwnProperty(i))
+        {
+            var row = {};
+            row.name = i;
+            row.speedLimit = layers[i].speedLimit;
+            row.X = [];
+            row.Y = [];
+            for(j in layers[i].circles)
+            {
+                row.X.push(layers[i].circles[j].center.x);
+                row.Y.push(layers[i].circles[j].center.y);
+            }
+            data.push(row);
+        }
+    }
+
+    $('#txt').html(JSON.stringify(data, null, 4));
+}
+
+function getEditType() {
+    return document.getElementById('type').value;
+}
+

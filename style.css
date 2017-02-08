@@ -52,7 +52,7 @@ input {
 }
 
 .control_block{
-    display: inline-block;
+    /*display: inline-block;*/
     margin-bottom: 10px;
     padding: 5px;
 }
@@ -62,10 +62,23 @@ input {
 }
 
 .control_block input,
+.control_block button,
 .control_block select{
     border: 1px solid #555555;
     height: 25px;
-    padding: 0 5px;
+    width: 80px;
+    padding: 0;
+    margin: 0;
+}
+
+input[type="button"],
+input[type="color"],
+button{
+    cursor: pointer;
+}
+
+.control_block select[size]{
+    height: inherit;
 }
 
 
@@ -83,4 +96,13 @@ input {
     line-height: 12px;
     font-size: 10px;
     color: #fff;
+}
+
+input[type="color"] {
+    opacity: 0;
+    display: block;
+    border: 1px solid #555555;
+}
+#color-picker-wrapper {
+    display: inline-block;
 }
