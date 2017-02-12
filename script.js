@@ -4,6 +4,8 @@ mouseY = 0;
 // move circle
 drag = false;
 activeCircle = null;
+window.layers = {};
+layersSize = 0;
 
 $(function () {
     canvasDiv = document.getElementById("canvas");
@@ -242,23 +244,31 @@ function track(track) {
     return false;
 }
 
-window.layers = {};
 
-function addLayer() {
+
+function addLayer(inpName) {
     var op = document.createElement('option');
-    var name = prompt('Input layer name');
+    if(typeof inpName == 'undefined')
+        var name = prompt('Input layer name');
+    else
+        name = inpName;
+
     if (name.length <= 0) {
         alert('name is empty');
         return undefined;
     }
+
+    layersSize++;
+
     op.selected = true;
-    op.value = op.innerHTML = name;
+    op.value = layersSize;
+    op.innerHTML = name;
 
-    layers[name] = {};
+    layers[layersSize] = {};
 
-    layers[name].circles = [];
-    layers[name].speedLimit = 0;
-    layers[name].name = name;
+    layers[layersSize].circles = [];
+    layers[layersSize].speedLimit = 0;
+    layers[layersSize].name = name;
 
     $('#layer').append(op);
     $('#layer').trigger('change');
@@ -282,6 +292,7 @@ function clearCanvas() {
     layers = {};
 
     $('#layer').html('');
+    layersSize = 0;
 }
 
 function Export() {
@@ -309,3 +320,38 @@ function getEditType() {
     return document.getElementById('type').value;
 }
 
+function loadJson(){
+
+    var conf = JSON.parse($('#txt').val())
+
+    if(typeof conf == 'undefined')
+        return;
+
+    clearCanvas();
+
+    for(i in conf)
+    {
+        var street = conf[i];
+
+        document.getElementById("color-picker").value = getRandomColor();
+
+        addLayer(street.name);
+        layers[getLayer()].speedLimit = street.speedLimit;
+
+        for(j in street['X']) {
+            mouseX = 1280 + street['X'][j];
+            mouseY = 1280 - street['Y'][j];
+            createCirlce(true);
+        }
+        reDrawPolygon();
+    }
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
