@@ -7,10 +7,41 @@ activeCircle = null;
 window.layers = {};
 layersSize = 0;
 
+draggingScreen = false;
+previousMouseX = 0;
+previousMouseY = 0;
+
 $(function () {
     canvasDiv = document.getElementById("canvas");
     window.gr = new jxGraphics(canvasDiv);
     gr.getSVG().style.opacity = 0.5;
+
+    $(document)
+        .on('contextmenu', function (e) {
+            if (draggingScreen) {
+                e.preventDefault();
+                draggingScreen = false;
+            }
+        })
+		.on('mousedown', function (e) {
+			if (e.which == 3) {
+				previousMouseX = e.clientX;
+				previousMouseY = e.clientY;
+				draggingScreen = true;
+				return false;
+			}
+		})
+		.on('mousemove', function (e) {
+			if (draggingScreen) {
+				xDiff = previousMouseX - e.clientX;
+				yDiff = previousMouseY - e.clientY;
+				window.scrollBy(xDiff, yDiff);
+				previousMouseX = e.clientX;
+				previousMouseY = e.clientY;
+				return false;
+			}
+		});
+	
 
     $(document).on('mousemove', '#canvas', function (e) {
         getMouseXY(e);
