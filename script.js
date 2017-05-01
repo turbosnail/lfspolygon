@@ -55,8 +55,8 @@ $(function () {
         }
     });
 
-    $(document).on('mouseup', '#canvas', function () {
-
+    $(document).on('mouseup', '#canvas', function (e) {
+		if (e.which != 1) return false;
         if (getEditType() == 'add') {
             createCirlce(true);
         }
