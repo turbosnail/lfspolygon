@@ -34,7 +34,14 @@ input {
     /*min-width:100px;*/
     /*background-color:#fff;*/
 }
-
+#work2 {
+    position: fixed;
+    top: 30px;
+    left: 0;
+    height: 50px;
+    /*min-width:100px;*/
+    /*background-color:#fff;*/
+}
 #canvas {
     /*overflow:hidden;*/
     position: absolute;
