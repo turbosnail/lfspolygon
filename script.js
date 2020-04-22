@@ -301,7 +301,7 @@ function Export() {
     for (i in layers) {
         if (layers.hasOwnProperty(i)) {
             var row = {};
-            row.name = i;
+            row.name = layers[i].name;
             row.speedLimit = layers[i].speedLimit;
             row.X = [];
             row.Y = [];
@@ -313,7 +313,7 @@ function Export() {
         }
     }
 
-    $('#txt').html(JSON.stringify(data, null, 4));
+    $('#txt').val(JSON.stringify(data, null, 4));
 }
 
 function getEditType() {
