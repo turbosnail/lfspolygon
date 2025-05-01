@@ -309,6 +309,7 @@ function Export() {
                 row.X.push(layers[i].circles[j].center.x - 1280);
                 row.Y.push(1280 - layers[i].circles[j].center.y);
             }
+            row.pitSafe = false;
             data.push(row);
         }
     }
