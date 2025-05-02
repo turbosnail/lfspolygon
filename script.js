@@ -185,7 +185,6 @@ function circleMouseDown(evt, obj) {
     if (getEditType() != 'add') {
         activeCircle = obj;
     }
-
 }
 
 //Mouseup event handler for circle
@@ -199,7 +198,6 @@ function circleMouseOver(evt, obj) {
 
     obj.brush = new jxBrush(new jxColor("red"));
     obj.draw(gr);
-
 }
 
 function circleMouseOut(evt, obj) {
@@ -208,7 +206,6 @@ function circleMouseOut(evt, obj) {
 
     obj.brush = new jxBrush(getColor());
     obj.draw(gr);
-
 }
 
 function reDrawPolygon() {
@@ -235,7 +232,6 @@ function reDrawPolygon() {
     layers[layer].polygon.points = points;
     layers[layer].polygon.brush = getBrush();
     layers[layer].polygon.draw(gr);
-
 }
 
 
@@ -309,7 +305,7 @@ function Export() {
                 row.X.push(layers[i].circles[j].center.x - 1280);
                 row.Y.push(1280 - layers[i].circles[j].center.y);
             }
-            row.pitSafe = false;
+            row.pitSafe = layers[i].pitSafe;
             data.push(row);
         }
     }
@@ -338,6 +334,7 @@ function loadJson(){
 
         addLayer(street.name);
         layers[getLayer()].speedLimit = parseInt(street.speedLimit, 10);
+        layers[getLayer()].pitSafe = street.pitSafe;
 
         for(j in street['X']) {
             mouseX = 1280 + street['X'][j];
