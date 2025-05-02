@@ -305,6 +305,7 @@ function Export() {
                 row.X.push(layers[i].circles[j].center.x - 1280);
                 row.Y.push(1280 - layers[i].circles[j].center.y);
             }
+            row.Z = layers[i].Z;
             row.pitSafe = layers[i].pitSafe;
             data.push(row);
         }
@@ -341,6 +342,10 @@ function loadJson(){
             mouseY = 1280 - street['Y'][j];
             createCirlce(true);
         }
+
+        if (street.Z != null)
+            layers[getLayer()].Z = street.Z;
+
         reDrawPolygon();
     }
 }
