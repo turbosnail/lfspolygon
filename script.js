@@ -185,7 +185,6 @@ function circleMouseDown(evt, obj) {
     if (getEditType() != 'add') {
         activeCircle = obj;
     }
-
 }
 
 //Mouseup event handler for circle
@@ -199,7 +198,6 @@ function circleMouseOver(evt, obj) {
 
     obj.brush = new jxBrush(new jxColor("red"));
     obj.draw(gr);
-
 }
 
 function circleMouseOut(evt, obj) {
@@ -208,7 +206,6 @@ function circleMouseOut(evt, obj) {
 
     obj.brush = new jxBrush(getColor());
     obj.draw(gr);
-
 }
 
 function reDrawPolygon() {
@@ -235,7 +232,6 @@ function reDrawPolygon() {
     layers[layer].polygon.points = points;
     layers[layer].polygon.brush = getBrush();
     layers[layer].polygon.draw(gr);
-
 }
 
 
@@ -267,7 +263,7 @@ function addLayer(inpName) {
     layers[layersSize] = {};
 
     layers[layersSize].circles = [];
-    layers[layersSize].speedLimit = 0;
+    layers[layersSize].speedLimit = parseInt(0, 10);
     layers[layersSize].name = name;
 
     $('#layer').append(op);
@@ -302,7 +298,7 @@ function Export() {
         if (layers.hasOwnProperty(i)) {
             var row = {};
             row.name = layers[i].name;
-            row.speedLimit = layers[i].speedLimit;
+            row.speedLimit = parseInt(layers[i].speedLimit, 10);
             row.X = [];
             row.Y = [];
             for (j in layers[i].circles) {
@@ -336,13 +332,14 @@ function loadJson(){
         document.getElementById("color-picker").value = getRandomColor();
 
         addLayer(street.name);
-        layers[getLayer()].speedLimit = street.speedLimit;
+        layers[getLayer()].speedLimit = parseInt(street.speedLimit, 10);
 
         for(j in street['X']) {
             mouseX = 1280 + street['X'][j];
             mouseY = 1280 - street['Y'][j];
             createCirlce(true);
         }
+
         reDrawPolygon();
     }
 }
