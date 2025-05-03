@@ -305,9 +305,6 @@ function Export() {
                 row.X.push(layers[i].circles[j].center.x - 1280);
                 row.Y.push(1280 - layers[i].circles[j].center.y);
             }
-            row.minZ = layers[i].minZ;
-            row.maxZ = layers[i].maxZ;
-            row.pitSafe = layers[i].pitSafe;
             data.push(row);
         }
     }
@@ -336,18 +333,11 @@ function loadJson(){
 
         addLayer(street.name);
         layers[getLayer()].speedLimit = parseInt(street.speedLimit, 10);
-        layers[getLayer()].pitSafe = street.pitSafe;
 
         for(j in street['X']) {
             mouseX = 1280 + street['X'][j];
             mouseY = 1280 - street['Y'][j];
             createCirlce(true);
-        }
-
-        if (street.minZ != null && street.maxZ != null)
-        {
-            layers[getLayer()].minZ = street.minZ;
-            layers[getLayer()].maxZ = street.maxZ;
         }
 
         reDrawPolygon();
