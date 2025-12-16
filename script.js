@@ -6,6 +6,8 @@ drag = false;
 activeCircle = null;
 window.layers = {};
 layersSize = 0;
+areaXhalf = 1280
+areaYhalf = 1280
 
 $(function () {
     canvasDiv = document.getElementById("canvas");
@@ -125,7 +127,7 @@ function getMouseXY(e) {
     $('.mouse_helper').css({
         left: (mouseX + 15) + 'px',
         top: (mouseY + 15) + 'px'
-    }).text('X: ' + (mouseX - 1280) + ' Y: ' + (1280 - mouseY));
+    }).text('X: ' + (mouseX - areaXhalf) + ' Y: ' + (areaYhalf - mouseY));
 
     // mouseX = mouseX - canvasDiv.offsetLeft;
     // mouseY = mouseY - canvasDiv.offsetTop;
@@ -240,7 +242,43 @@ function reDrawPolygon() {
 
 
 function track(track) {
-    canvasDiv.style.backgroundImage = "url(http://img.lfs.net/remote/maps/" + track + ".jpg)";
+
+    url=""
+    size=2560
+    switch (track) {
+        case "BL":
+        size=2560
+        break;
+        case "SO":
+        size=3072
+        break;
+        case "FE":
+        size=2048
+        break;
+        case "AU":
+        size=2560
+        break;
+        case "KY":
+        size=3072
+        break;
+        case "WE":
+        size=3072
+        break;
+        case "AS":
+        size=2560
+        break;
+        case "RO":
+        size=1536
+        break;
+        case "LA":
+        size=4096
+
+        break;
+    }
+    areaXhalf = areaYhalf = size / 2
+    canvasDiv.style.width = size + "px"
+    canvasDiv.style.height = size + "px"
+    canvasDiv.style.backgroundImage = "url(https://www.lfs.net/track_maps/" + track + "_" + size + ".png)";
     return false;
 }
 
@@ -306,8 +344,8 @@ function Export() {
             row.X = [];
             row.Y = [];
             for (j in layers[i].circles) {
-                row.X.push(layers[i].circles[j].center.x - 1280);
-                row.Y.push(1280 - layers[i].circles[j].center.y);
+                row.X.push(layers[i].circles[j].center.x - areaXhalf);
+                row.Y.push(areaYhalf - layers[i].circles[j].center.y);
             }
             data.push(row);
         }
@@ -339,8 +377,8 @@ function loadJson(){
         layers[getLayer()].speedLimit = street.speedLimit;
 
         for(j in street['X']) {
-            mouseX = 1280 + street['X'][j];
-            mouseY = 1280 - street['Y'][j];
+            mouseX = areaXhalf + street['X'][j];
+            mouseY = areaYhalf - street['Y'][j];
             createCirlce(true);
         }
         reDrawPolygon();
