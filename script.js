@@ -72,10 +72,11 @@ $(function () {
 
     $(document).on('change', '#layer', function (e) {
         var elem = this;
+        $('#name').val(layers[elem.value].name);
+        $('#speed').val(layers[elem.value].speedLimit);
         for (i in layers) {
             if (layers.hasOwnProperty(i)) {
-                $('#name').val(layers[i].name);
-                $('#speed').val(layers[i].speedLimit);
+                
                 for (j in layers[i].circles) {
                     if (i == elem.value)
                         layers[i].circles[j].show();
@@ -319,6 +320,7 @@ function getLayer() {
 function clearCanvas() {
     for (i in layers) {
         if (layers.hasOwnProperty(i)) {
+            console.log(i)
             for (j in layers[i].circles) {
                 layers[i].circles[j].remove();
             }
